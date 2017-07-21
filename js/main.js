@@ -35,10 +35,10 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("vue created");
         },
         methods: {
-            createPolySet: function() {
+            createPolySet: function(input) {
                 var type = this.typeMap[(this.set.length / 3) % 3];
-
                 var p1, p2, p3, p4, p5, p6;
+
 
                 /* create point 1 */
                 p1 = this.s1;
@@ -47,87 +47,91 @@ document.addEventListener("DOMContentLoaded", function() {
                 p2 = this.s2;
 
                 /* create point 3 */
-                if (type === 0) {
-                    p3 = [
-                        p1[0] + (p2[0] - p1[0]) * 0.75,
-                        p1[1] + (p2[1] - p1[1]) * 0.75
-                    ];
-                } else {
-                    p3 = [
-                        p1[0] + (p2[0] - p1[0]) * 0.5,
-                        p1[1] + (p2[1] - p1[1]) * 0.5
-                    ];
-                }
+                randomNumber = 0.25 + (Math.random() * 5) / 10;
+                p3 = [
+                    p1[0] + (p2[0] - p1[0]) * randomNumber,
+                    p1[1] + (p2[1] - p1[1]) * randomNumber
+                ];
 
                 /* create point 4 */
-                if (type === 1) {
-                    p4 = [
-                        p1[0],
-                        p1[1] + this.unitHeight
-                    ];
-                } else {
-                    p4 = [
-                        p2[0],
-                        p2[1] + this.unitHeight
-                    ];
-                }
+                p4 = [
+                    p2[0],
+                    p2[1] + this.unitHeight
+                ];
 
                 /* create point 5 */
-                if (type === 1) {
-                    p5 = [
-                        p4[0] + (p3[0] - p4[0]) * 0.5,
-                        p4[1] + (p3[1] - p4[1]) * 0.5
-                    ];
-                } else {
-                    p5 = [
-                        p3[0] + (p4[0] - p3[0]) * 0.5,
-                        p3[1] + (p4[1] - p3[1]) * 0.5
-                    ];
-                }
+                randomNumber = 0.25 + (Math.random() * 5) / 10;
+                p5 = [
+                    p3[0] + (p4[0] - p3[0]) * randomNumber,
+                    p3[1] + (p4[1] - p3[1]) * randomNumber
+                ];
 
                 /* create point 6 */
-                if (type === 1) {
-                    p6 = [
-                        p2[0],
-                        p4[1] + this.unitHeight
-                    ];
-                } else {
-                    p6 = [
-                        p1[0],
-                        p4[1] + this.unitHeight
-                    ];
-                }
+                p6 = [
+                    p1[0],
+                    p4[1] + this.unitHeight
+                ];
 
                 /* create polygon */
                 this.set.push({
-                    d: make_path([p3, p2, p4]),
+                    d: make_path([p2, p3, p4]),
                     fill: create_color(this.main_color),
-                    stroke: create_color(255)
+                    stroke: "white",
+                    id: input.id + 0,
+                    position: {
+                        x: p3[0],
+                        y: p3[1]
+                    },
+                    size: {
+                        width: Math.abs(p2[0] - p3[0]),
+                        height: Math.abs(p4[1] - p2[1])
+                    },
+                    imageSrc: team_rwby.ruby
                 }, {
                     d: make_path([p1, p3, p5, p6]),
                     fill: create_color(this.main_color),
-                    stroke: create_color(255)
+                    stroke: "white",
+                    id: input.id + 1,
+                    position: {
+                        x: 0,
+                        y: 0
+                    },
+                    size: {
+                        width: Math.abs(p5[0] - p1[0]),
+                        height: Math.abs(p6[1] - p1[1])
+                    },
+                    imageSrc: team_rwby.weiss
                 }, {
                     d: make_path([p4, p5, p6]),
                     fill: create_color(this.main_color),
-                    stroke: create_color(255)
+                    stroke: "white",
+                    id: input.id + 2,
+                    position: {
+                        x: 0,
+                        y: 0
+                    },
+                    size: {
+                        width: Math.abs(p6[0] - p4[0]),
+                        height: Math.abs(p6[1] - p5[1])
+                    },
+                    imageSrc: team_rwby.blake
                 });
 
                 /* change start point */
-                if (type === 1) {
-                    this.s1 = p4;
-                    this.s2 = p6;
-                } else {
-                    this.s1 = p6;
-                    this.s2 = p4;
-                }
+                this.s1 = p4;
+                this.s2 = p6;
+
+                this.height = p6[1];
+
             }
         },
         mounted: function() {
-            this.createPolySet();
-            this.createPolySet();
-            this.createPolySet();
-            this.createPolySet();
+            for (var i = 0; i < 10; i++) {
+                this.createPolySet({
+                    id: 'id' + i,
+                    imageSrc: team_rwby.ruby
+                });
+            }
         }
     });
     var paper = Snap("#svg");

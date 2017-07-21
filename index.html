@@ -17,9 +17,12 @@
         <svg id='svg' :width='width' :height='height' >
             <template v-for='item in set'>
                 <defs>
-                    <pattern x="0" y="0" width="248.39999999999998" height="540" patternUnits="userSpaceOnUse" id="patternSj5djb8ps4"><image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://puu.sh/oXDLO/7b5a932ef1.jpg" preserveAspectRatio="xMidYMid slice" x="0" y="0" width="248.39999999999998" height="540"></image></pattern>
+                    <pattern :x="item.position.x" :y="item.position.y" :width="item.size.width" :height="item.size.height" patternUnits="userSpaceOnUse" :id="item.id">
+                        <image xmlns:xlink="http://www.w3.org/1999/xlink" v-bind:xlink:href="item.imageSrc" preserveAspectRatio="xMidYMid slice" x="0" y="0" :width="item.size.width" :height="item.size.height"></image>
+                    </pattern>
                 </defs>
-                <path :d='item.d' :stroke='item.stroke' strokeWidth='10' :fill='item.fill'></path>
+                <!-- <path :d='item.d' :stroke='item.stroke' strokeWidth='10' fill='url(#patternId)'></path> -->
+                <path :d='item.d' :stroke='item.stroke' strokeWidth='10' :fill=' "url(#"+item.id+")" '></path>
             </template>
         </svg>
 
