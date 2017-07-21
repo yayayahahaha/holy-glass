@@ -148,10 +148,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
-    var paper = Snap("#svg");
-
-    /* this polygons' array include coordinates and image's source  */
-    var polygons = [];
 
     function make_path() {
         d = "M";
