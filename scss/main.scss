@@ -6,5 +6,18 @@
 }
 
 body{
+    width: 100vw;
     background-color: #fff;
+    overflow-x: hidden;
+
+    path {
+        opacity: 0.5;
+        @include transition(opacity 0.3s);
+
+        &:hover{
+            opacity: 1;
+        }
+
+    }
+
 }

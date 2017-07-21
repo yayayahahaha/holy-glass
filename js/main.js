@@ -5,6 +5,13 @@ var team_rwby = {
     "yang": "https://puu.sh/oXDO9/3c169032d0.jpg"
 };
 
+team_rwby_arry = [
+    "https://puu.sh/oXDLO/7b5a932ef1.jpg",
+    "https://puu.sh/oXDNd/169a74d36c.jpg",
+    "https://puu.sh/oXDNQ/bec8c790e4.jpg",
+    "https://puu.sh/oXDO9/3c169032d0.jpg"
+];
+
 /*
     [
         [1, 3, 5, 6],
@@ -25,14 +32,14 @@ document.addEventListener("DOMContentLoaded", function() {
             height: h,
             s1: [0, 0],
             s2: [w, 0],
-            unitHeight: 150,
+            unitHeight: w/5 ,
             typeMap: [0, 1, 2],
             set: [],
             array: [],
             main_color: Math.round(Math.random() * 255)
         },
         created: function() {
-            console.log("vue created");
+            
         },
         methods: {
             createPolySet: function(input) {
@@ -72,6 +79,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     p4[1] + this.unitHeight
                 ];
 
+                var poly234 = [p2, p3, p4],
+                    poly1356 = [p1, p3, p5, p6],
+                    poly456 = [p4, p5, p6];
+
+                poly234 = sortCoordinate(poly234);
+                poly1356 = sortCoordinate(poly1356);
+                poly456 = sortCoordinate(poly456);
+
                 /* create polygon */
                 this.set.push({
                     d: make_path([p2, p3, p4]),
@@ -79,42 +94,42 @@ document.addEventListener("DOMContentLoaded", function() {
                     stroke: "white",
                     id: input.id + 0,
                     position: {
-                        x: p3[0],
-                        y: p3[1]
+                        x: poly234.sX,
+                        y: poly234.sY
                     },
                     size: {
-                        width: Math.abs(p2[0] - p3[0]),
-                        height: Math.abs(p4[1] - p2[1])
+                        width:  poly234.bX - poly234.sX,
+                        height: poly234.bY - poly234.sY
                     },
-                    imageSrc: team_rwby.ruby
+                    imageSrc: team_rwby_arry[(this.set.length) % 4]
                 }, {
                     d: make_path([p1, p3, p5, p6]),
                     fill: create_color(this.main_color),
                     stroke: "white",
                     id: input.id + 1,
                     position: {
-                        x: 0,
-                        y: 0
+                        x: poly1356.sX,
+                        y: poly1356.sY
                     },
                     size: {
-                        width: Math.abs(p5[0] - p1[0]),
-                        height: Math.abs(p6[1] - p1[1])
+                        width:  poly1356.bX - poly1356.sX,
+                        height: poly1356.bY - poly1356.sY
                     },
-                    imageSrc: team_rwby.weiss
+                    imageSrc: team_rwby_arry[(this.set.length+1) % 4]
                 }, {
                     d: make_path([p4, p5, p6]),
                     fill: create_color(this.main_color),
                     stroke: "white",
                     id: input.id + 2,
                     position: {
-                        x: 0,
-                        y: 0
+                        x: poly456.sX,
+                        y: poly456.sY
                     },
                     size: {
-                        width: Math.abs(p6[0] - p4[0]),
-                        height: Math.abs(p6[1] - p5[1])
+                        width:  poly456.bX - poly456.sX,
+                        height: poly456.bY - poly456.sY
                     },
-                    imageSrc: team_rwby.blake
+                    imageSrc: team_rwby_arry[(this.set.length+2) % 4]
                 });
 
                 /* change start point */
@@ -128,8 +143,7 @@ document.addEventListener("DOMContentLoaded", function() {
         mounted: function() {
             for (var i = 0; i < 10; i++) {
                 this.createPolySet({
-                    id: 'id' + i,
-                    imageSrc: team_rwby.ruby
+                    id: 'id' + i
                 });
             }
         }
@@ -165,5 +179,28 @@ document.addEventListener("DOMContentLoaded", function() {
         lightness = 60 - (Math.random() * 20) + "%";
 
         return "hsl(" + main_color + "," + saturation + "," + lightness + ")";
+    }
+
+    function sortCoordinate(input) {
+        var tempA = input.slice();
+        tempA.sort(function(a, b) {
+            return a[0] - b[0];
+        });
+        sX = tempA[0][0];
+        bX = tempA[tempA.length - 1][0];
+
+        /* get largest and smallest ycoordinate */
+        tempA.sort(function(a, b) {
+            return a[1] - b[1];
+        });
+        sY = tempA[0][1];
+        bY = tempA[tempA.length - 1][1];
+
+        return {
+            sX: sX,
+            bX: bX,
+            sY: sY,
+            bY: bY
+        };
     }
 });

@@ -1,1 +1,1 @@
-*{padding:0px;margin:0px}body{background-color:#fff}
+*{padding:0px;margin:0px}body{width:100vw;background-color:#fff;overflow-x:hidden}body path{opacity:0.5;-moz-transition:opacity .3s;-o-transition:opacity .3s;-webkit-transition:opacity .3s;transition:opacity .3s}body path:hover{opacity:1}
